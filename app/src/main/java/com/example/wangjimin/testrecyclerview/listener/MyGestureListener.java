@@ -1,9 +1,12 @@
-package com.example.wangjimin.testrecyclerview;
+package com.example.wangjimin.testrecyclerview.listener;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+
+import com.example.wangjimin.testrecyclerview.MainActivity;
+import com.example.wangjimin.testrecyclerview.utils.AnimatorUtils;
 
 /**
  * Created by wangjimin on 16/7/23.
@@ -67,7 +70,7 @@ public class MyGestureListener implements GestureDetector.OnGestureListener {
         if(isHorizontal){
             if(velocityX < 0){
                 Log.d("wjm","move left");
-                AnimatorUtils.moveLeft(activity.getTextView(),step);
+                AnimatorUtils.moveLeft(activity.getTextView(), step);
             }else{
                 Log.d("wjm","move right");
                 AnimatorUtils.moveRight(activity.getTextView(),step);

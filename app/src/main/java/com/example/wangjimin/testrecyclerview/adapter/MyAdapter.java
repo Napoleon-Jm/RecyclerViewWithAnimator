@@ -1,10 +1,14 @@
-package com.example.wangjimin.testrecyclerview;
+package com.example.wangjimin.testrecyclerview.adapter;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.wangjimin.testrecyclerview.R;
 
 /**
  * Created by wangjimin on 16/7/22.
@@ -27,6 +31,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.v.setText(mData[position]);
+        setOnClickEvent(holder.v,position);
     }
 
     @Override
@@ -41,5 +46,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             super(itemView);
             v = (TextView)itemView;
         }
+    }
+
+    private void setOnClickEvent(View v, final int position){
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v,mData[position],Snackbar.LENGTH_SHORT).setAction("dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
+                Log.d("wjm","click:" + position);
+            }
+        });
     }
 }

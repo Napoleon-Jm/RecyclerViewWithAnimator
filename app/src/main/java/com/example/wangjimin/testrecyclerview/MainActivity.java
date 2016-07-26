@@ -12,9 +12,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.BounceInterpolator;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import com.example.wangjimin.testrecyclerview.adapter.MyAdapter;
+import com.example.wangjimin.testrecyclerview.layout.MyLayoutManager;
+import com.example.wangjimin.testrecyclerview.listener.MyGestureListener;
+import com.example.wangjimin.testrecyclerview.utils.AnimatorUtils;
 
 /**
  * @author : jimin.wjm@alipay.com
@@ -30,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private TextView textView;
 
     private RecyclerView recyclerViewWithNoAni;
+    private MyLayoutManager myLayoutManager;
 
     private String[] mData;
 
@@ -38,20 +46,21 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     //single text view with.
     private int singleTextViewWidth;
 
+    //for multi gesture.
     private float pointer1Y;
     private float pointer2Y;
 
     private final String PROPERTY_NAME = "width";
     //max distance to animate.
-    private final int MAX_DIS = 100;
+    private final int MAX_DIS = 80;
     //min distance to animate.
     private final int MIN_DIS = 20;
     //scale of dx to distance.
     private final int SCALE = 3;
     //animate time.
-    private final long ANI_TIME = 300;
+    private final long ANI_TIME = 200;
     //reverse time.
-    private final long ANI_REVERSE_TIME = 200;
+    private final long ANI_REVERSE_TIME = 300;
 
     private float pointerDis;
 
@@ -78,7 +87,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         recyclerView.setAdapter(myAdapter);
 
         recyclerViewWithNoAni = (RecyclerView)findViewById(R.id.recycler_view_noani);
-        recyclerViewWithNoAni.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        myLayoutManager = new MyLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        recyclerViewWithNoAni.setLayoutManager(myLayoutManager);
         recyclerViewWithNoAni.setAdapter(myAdapter);
 
         textView = (TextView)findViewById(R.id.single_textview);
@@ -99,14 +109,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     WrapperView wrapper = new WrapperView(recyclerView.getChildAt(index));
                     ObjectAnimator animator = ObjectAnimator
                             .ofInt(wrapper, PROPERTY_NAME, itemWidth, itemWidth + distance);
+                    animator.setInterpolator(new AccelerateDecelerateInterpolator());
                     ObjectAnimator animator1 = ObjectAnimator
                             .ofInt(wrapper, PROPERTY_NAME, itemWidth);
+                    animator1.setInterpolator(new AccelerateDecelerateInterpolator());
                     animator.setDuration(ANI_TIME);
                     animator1.setDuration(ANI_REVERSE_TIME);
                     AnimatorSet set = new AnimatorSet();
                     set.playSequentially(animator, animator1);
                     set.start();
-                    Log.d("wjm with", wrapper.getWidth() + "");
                 }
             }
 
@@ -114,13 +125,23 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 this.dx = dx;
-//                Log.d("wjm dx,dy: ", "dx: " + dx + " ,dy: " + dy);
             }
         });
 
         myGestureListener = new MyGestureListener(this);
         gestureDetector = new GestureDetector(this,myGestureListener);
         textView.setOnTouchListener(this);
+        recyclerViewWithNoAni.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 
     private void initData(){
@@ -166,27 +187,23 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             case MotionEvent.ACTION_POINTER_UP:
                 Log.d("wjm", "action pointer up");
                 dispatchPointerEvent(event);
-//                scaleAni(spaceing(event));
                 return true;
             default:
                 return gestureDetector.onTouchEvent(event);
         }
     }
 
-    private void dispatchPointerEvent(MotionEvent event){
+    private void dispatchPointerEvent(MotionEvent event) {
         boolean isConsume = scaleAni(event);
-        if(isConsume){
-            return;
-        }else{
+        if (!isConsume)
             rotateAni(event);
-        }
     }
 
     private void rotateAni(MotionEvent event){
         float deltaY1 = event.getY(0) - pointer1Y;
         float deltaY2 = event.getY(1) - pointer2Y;
         if(deltaY1*deltaY2 < 0){
-                AnimatorUtils.rotate(textView,deltaY1);
+                AnimatorUtils.rotate(textView, deltaY1);
         }
     }
 

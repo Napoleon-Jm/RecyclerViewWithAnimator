@@ -1,4 +1,4 @@
-package com.example.wangjimin.testrecyclerview;
+package com.example.wangjimin.testrecyclerview.utils;
 
 import android.animation.ObjectAnimator;
 import android.view.View;
