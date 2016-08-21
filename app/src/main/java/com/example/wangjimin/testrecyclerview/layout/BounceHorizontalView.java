@@ -48,8 +48,10 @@ public class BounceHorizontalView extends HorizontalScrollView {
     private void handleTouchEvent(MotionEvent ev){
         switch (ev.getAction()){
             case MotionEvent.ACTION_DOWN:
+                Log.d("wjm HorizontalView","onTouchEvent down");
                 break;
             case MotionEvent.ACTION_MOVE:
+                Log.d("wjm HorizontalView","onTouchEvent move");
                 float curL = ev.getX();
                 int delta = (int)(curL - preL);
                 if(isFirst)
@@ -64,6 +66,7 @@ public class BounceHorizontalView extends HorizontalScrollView {
                 isFirst = false;
                 break;
             case MotionEvent.ACTION_UP:
+                Log.d("wjm HorizontalView","onTouchEvent up");
                 if(isNeedAnimation()){
                     animation();
                     mInitPosition.setEmpty();
@@ -88,15 +91,15 @@ public class BounceHorizontalView extends HorizontalScrollView {
     private boolean isInnerNeedMove(){
         int offset = inner.getMeasuredWidth() - getWidth();
         int scrollX = getScrollX();
-        Log.d("wjm","getScrollX:" + scrollX + "  measrueWidth:" + inner.getMeasuredWidth() + " getWidth:" + getWidth());
+//        Log.d("wjm","getScrollX:" + scrollX + "  measrueWidth:" + inner.getMeasuredWidth() + " getWidth:" + getWidth());
         return (scrollX == 0 || scrollX == offset) && inner.getMeasuredWidth() >= getWidth();
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {
 //        Boolean b = (Boolean)this.getTag(R.string.intercept);
 //        return b == null?false:b;
 //        return isInnerNeedMove();
-        return super.onInterceptTouchEvent(ev);
-    }
+//        return super.onInterceptTouchEvent(ev);
+//    }
 }

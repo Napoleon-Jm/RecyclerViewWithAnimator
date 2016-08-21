@@ -42,7 +42,8 @@
             <TextView
                 style="@style/titleTheme"
                 android:text="with ios animation."/>
-            <com.example.wangjimin.testrecyclerview.BounceHorizontalView
+
+            <com.example.wangjimin.testrecyclerview.layout.BounceHorizontalView
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:id="@+id/outer"
@@ -51,11 +52,15 @@
                 android:scrollbars="none"
                 android:focusable="true"
                 android:focusableInTouchMode="true">
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view_noani"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-            </com.example.wangjimin.testrecyclerview.BounceHorizontalView>
+
+            </com.example.wangjimin.testrecyclerview.layout.BounceHorizontalView>
+
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

@@ -4,6 +4,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -52,7 +53,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v,mData[position],Snackbar.LENGTH_SHORT).setAction("dismiss", new View.OnClickListener() {
+                Snackbar.make(v,mData[position],Snackbar.LENGTH_SHORT)
+                        .setAction("dismiss", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
@@ -61,5 +63,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 Log.d("wjm","click:" + position);
             }
         });
+        v.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        Log.d("wjm","onTouch down");
+                        Log.d("wjm", ((RecyclerView)(v.getParent())).getMeasuredWidth() + "" );
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        Log.d("wjm","onTouch move");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        Log.d("wjm","onTouch up");
+                        break;
+                }
+                Log.d("wjm TextView","onTouch:" + position);
+                return true;
+            }
+        });
     }
+
 }

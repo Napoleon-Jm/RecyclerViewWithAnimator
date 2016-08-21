@@ -13,13 +13,11 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.BounceInterpolator;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.wangjimin.testrecyclerview.adapter.MyAdapter;
-import com.example.wangjimin.testrecyclerview.layout.MyLayoutManager;
 import com.example.wangjimin.testrecyclerview.listener.MyGestureListener;
 import com.example.wangjimin.testrecyclerview.utils.AnimatorUtils;
 
@@ -37,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private TextView textView;
 
     private RecyclerView recyclerViewWithNoAni;
-    private MyLayoutManager myLayoutManager;
 
     private String[] mData;
 
@@ -87,8 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         recyclerView.setAdapter(myAdapter);
 
         recyclerViewWithNoAni = (RecyclerView)findViewById(R.id.recycler_view_noani);
-        myLayoutManager = new MyLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        recyclerViewWithNoAni.setLayoutManager(myLayoutManager);
+        recyclerViewWithNoAni.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         recyclerViewWithNoAni.setAdapter(myAdapter);
 
         textView = (TextView)findViewById(R.id.single_textview);
